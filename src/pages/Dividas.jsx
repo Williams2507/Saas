@@ -982,7 +982,7 @@ const Dividas = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
             {/* Esquerda: Métricas e Gráfico */}
             <div className="lg:col-span-8 flex flex-col gap-6">
-              <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 gap-6">
                 <MetricCard title="Saldo Devedor Total" value={formatCurrency(stats.totalBalance)} linkText={`${debts.length} dívidas ativas`} linkColor="text-blue-600" icon={Wallet} onClick={() => setStatusFilter('Todos')} />
                 <MetricCard title="Comprometimento Mensal" value={formatCurrency(stats.totalInstallment)} linkText="Total das parcelas" linkColor="text-slate-600" icon={CalendarDays} onClick={() => setStatusFilter('Todos')} />
                 <MetricCard title="Juros Estimados (Ano)" value={formatCurrency(stats.estimatedInterest)} linkText={`${formatPercent(stats.avgCet)} CET médio`} linkColor="text-red-600" icon={TrendingUp} onClick={() => setStatusFilter('Atrasado')} />
