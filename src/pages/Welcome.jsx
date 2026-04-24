@@ -21,16 +21,7 @@ const Welcome = () => {
         </div>
         
         <div className="flex items-center gap-4">
-          <div className="relative group cursor-pointer">
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 hover:bg-slate-50 transition-colors text-sm font-medium text-slate-600">
-              <Globe size={14} className="text-slate-400" />
-              <span>PT-BR</span>
-              <ChevronDown size={12} className="text-slate-400" />
-            </div>
-          </div>
-          <button className="w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-50 transition-colors">
-            <Moon size={18} />
-          </button>
+
         </div>
       </header>
 
@@ -60,9 +51,6 @@ const Welcome = () => {
                 className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-semibold shadow-lg shadow-brand-500/30 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
               >
                 Criar Conta Grátis <ArrowRight size={18} />
-              </button>
-              <button className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-semibold shadow-sm transition-all flex items-center justify-center gap-2">
-                <PlayCircle size={20} className="text-brand-600" /> Ver Demonstração
               </button>
             </div>
             

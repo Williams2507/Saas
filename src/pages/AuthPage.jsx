@@ -36,9 +36,40 @@ const AuthPage = () => {
   const isForgot = mode === 'forgot';
   const isUpdatePassword = mode === 'updatePassword';
 
+  const getAuthRedirectUrl = () => {
+    const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;
+    return `${appUrl}/login?mode=update-password`;
+  };
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    const hashParams = new URLSearchParams(
+      window.location.hash.replace(/^#/, '')
+    );
+
     const urlMode = params.get('mode');
+
+    const hashError = hashParams.get('error');
+    const hashErrorCode = hashParams.get('error_code');
+    const hashErrorDescription = hashParams.get('error_description');
+
+    if (hashError || hashErrorCode || hashErrorDescription) {
+      if (
+        hashErrorCode === 'otp_expired' ||
+        String(hashErrorDescription || '').toLowerCase().includes('expired') ||
+        String(hashErrorDescription || '').toLowerCase().includes('invalid')
+      ) {
+        setMode('forgot');
+        setError(
+          'Esse link de recuperação expirou ou já foi usado. Solicite um novo link para redefinir sua senha.'
+        );
+      } else {
+        setError('Não foi possível validar o link. Solicite um novo link.');
+      }
+
+      window.history.replaceState({}, document.title, '/login');
+      return;
+    }
 
     if (urlMode === 'update-password') {
       setMode('updatePassword');
@@ -49,6 +80,8 @@ const AuthPage = () => {
     } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'PASSWORD_RECOVERY') {
         setMode('updatePassword');
+        setError('');
+        setSuccess('');
       }
     });
 
@@ -123,6 +156,15 @@ const AuthPage = () => {
       lowerMessage.includes('duplicate')
     ) {
       return 'Este e-mail já está cadastrado. Tente fazer login ou recuperar a senha.';
+    }
+
+    if (
+      lowerMessage.includes('otp') ||
+      lowerMessage.includes('expired') ||
+      lowerMessage.includes('invalid token') ||
+      lowerMessage.includes('email link is invalid')
+    ) {
+      return 'Esse link de recuperação expirou ou já foi usado. Solicite um novo link.';
     }
 
     if (
@@ -329,7 +371,7 @@ const AuthPage = () => {
     setLoading(true);
 
     try {
-      const redirectUrl = `${window.location.origin}${window.location.pathname}?mode=update-password`;
+      const redirectUrl = getAuthRedirectUrl();
 
       const { error: resetError } = await supabase.auth.resetPasswordForEmail(
         email,
